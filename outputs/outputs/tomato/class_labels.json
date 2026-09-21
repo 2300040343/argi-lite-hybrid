@@ -1,0 +1,30 @@
+{
+  "class_indices": {
+    "Bacterial_spot": 0,
+    "Early_blight": 1,
+    "Late_blight": 2,
+    "Leaf_Mold": 3,
+    "Septoria_leaf_spot": 4,
+    "Spider_mites Two-spotted_spider_mite": 5,
+    "Target_Spot": 6,
+    "Tomato_Yellow_Leaf_Curl_Virus": 7,
+    "Tomato_mosaic_virus": 8,
+    "healthy": 9,
+    "powdery_mildew": 10
+  },
+  "class_names": [
+    "Bacterial_spot",
+    "Early_blight",
+    "Late_blight",
+    "Leaf_Mold",
+    "Septoria_leaf_spot",
+    "Spider_mites Two-spotted_spider_mite",
+    "Target_Spot",
+    "Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_mosaic_virus",
+    "healthy",
+    "powdery_mildew"
+  ],
+  "num_classes": 11,
+  "crop": "tomato"
+}

@@ -1,0 +1,22 @@
+{
+  "class_indices": {
+    "brinjal_Augmented_Healthy_Leaf": 0,
+    "brinjal_Augmented_Insect_Pest_Disease": 1,
+    "brinjal_Augmented_Leaf_Spot_Disease": 2,
+    "brinjal_Augmented_Mosaic_Virus_Disease": 3,
+    "brinjal_Augmented_Small_Leaf_Disease": 4,
+    "brinjal_Augmented_White_Mold_Disease": 5,
+    "brinjal_Augmented_Wilt_Disease": 6
+  },
+  "class_names": [
+    "brinjal_Augmented_Healthy_Leaf",
+    "brinjal_Augmented_Insect_Pest_Disease",
+    "brinjal_Augmented_Leaf_Spot_Disease",
+    "brinjal_Augmented_Mosaic_Virus_Disease",
+    "brinjal_Augmented_Small_Leaf_Disease",
+    "brinjal_Augmented_White_Mold_Disease",
+    "brinjal_Augmented_Wilt_Disease"
+  ],
+  "num_classes": 7,
+  "crop": "brinjal"
+}

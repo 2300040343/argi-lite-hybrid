@@ -1,0 +1,81 @@
+{
+  "Bacterial_spot": {
+    "precision": 0.979108635097493,
+    "recall": 0.9603825136612022,
+    "f1-score": 0.9696551724137931,
+    "support": 732.0
+  },
+  "Early_blight": {
+    "precision": 0.9427244582043344,
+    "recall": 0.9471228615863142,
+    "f1-score": 0.9449185415050426,
+    "support": 643.0
+  },
+  "Late_blight": {
+    "precision": 0.9443069306930693,
+    "recall": 0.9633838383838383,
+    "f1-score": 0.95375,
+    "support": 792.0
+  },
+  "Leaf_Mold": {
+    "precision": 0.9862448418156808,
+    "recall": 0.9702300405953992,
+    "f1-score": 0.9781718963165075,
+    "support": 739.0
+  },
+  "Septoria_leaf_spot": {
+    "precision": 0.957004160887656,
+    "recall": 0.9249329758713136,
+    "f1-score": 0.9406952965235174,
+    "support": 746.0
+  },
+  "Spider_mites Two-spotted_spider_mite": {
+    "precision": 0.9790697674418605,
+    "recall": 0.967816091954023,
+    "f1-score": 0.9734104046242774,
+    "support": 435.0
+  },
+  "Target_Spot": {
+    "precision": 0.9012096774193549,
+    "recall": 0.9781181619256017,
+    "f1-score": 0.938090241343127,
+    "support": 457.0
+  },
+  "Tomato_Yellow_Leaf_Curl_Virus": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 0.0
+  },
+  "Tomato_mosaic_virus": {
+    "precision": 0.9929328621908127,
+    "recall": 0.9859649122807017,
+    "f1-score": 0.9894366197183099,
+    "support": 570.0
+  },
+  "healthy": {
+    "precision": 0.9742647058823529,
+    "recall": 0.9875776397515528,
+    "f1-score": 0.9808760024676126,
+    "support": 805.0
+  },
+  "powdery_mildew": {
+    "precision": 0.9875518672199171,
+    "recall": 0.9444444444444444,
+    "f1-score": 0.9655172413793104,
+    "support": 252.0
+  },
+  "accuracy": 0.9633770863717388,
+  "macro avg": {
+    "precision": 0.876765264259321,
+    "recall": 0.875452134586763,
+    "f1-score": 0.8758655832992269,
+    "support": 6171.0
+  },
+  "weighted avg": {
+    "precision": 0.9642515865161195,
+    "recall": 0.9633770863717388,
+    "f1-score": 0.9636044558965972,
+    "support": 6171.0
+  }
+}

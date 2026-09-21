@@ -1,0 +1,24 @@
+{
+  "class_indices": {
+    "Chilli __Whitefly": 0,
+    "Chilli __Yellowish": 1,
+    "Chilli__Anthracnos": 2,
+    "Chilli__Damping_Off": 3,
+    "Chilli__Leaf_Curl_Virus": 4,
+    "Chilli__Leaf_Spot": 5,
+    "Chilli__Veinal_Mottle_Virus": 6,
+    "Chilli___healthy": 7
+  },
+  "class_names": [
+    "Chilli __Whitefly",
+    "Chilli __Yellowish",
+    "Chilli__Anthracnos",
+    "Chilli__Damping_Off",
+    "Chilli__Leaf_Curl_Virus",
+    "Chilli__Leaf_Spot",
+    "Chilli__Veinal_Mottle_Virus",
+    "Chilli___healthy"
+  ],
+  "num_classes": 8,
+  "crop": "chilli"
+}

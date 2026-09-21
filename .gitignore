@@ -83,11 +83,7 @@ htmlcov/
 .pytest_cache/
 .mypy_cache/
 
-# ML Models (large files - store separately)
-models/*.h5
-models/*.tflite
-models/*.keras
-!models/.gitkeep
+# ML models and exported artifacts are versioned with Git LFS.
 
 # Uploads
 backend/static/uploads/*
@@ -113,6 +109,6 @@ temp/
 DataSets/
 data/
 
-# Model outputs
-outputs/
-*.tflite
+# Training logs remain local; models, plots, and metadata are versioned.
+outputs/**/logs/
+scripts/outputs/**/logs/
