@@ -23,22 +23,6 @@ crops_bp = Blueprint('crops', __name__)
 
 # Default crop data (used if class_labels.json is not available)
 DEFAULT_CROPS = {
-    'brinjal': {
-        'name': 'brinjal',
-        'display_name': 'Brinjal (Eggplant)',
-        'description': 'Common vegetable crop susceptible to various fungal and viral diseases. Early detection helps prevent yield loss.',
-        'image': '/images/crops/brinjal.jpg',
-        'diseases': [
-            'Healthy',
-            'Insect Pest Disease',
-            'Leaf Spot Disease',
-            'Mosaic Virus Disease',
-            'Small Leaf Disease',
-            'White Mold Disease',
-            'Wilt Disease'
-        ],
-        'color': '#8B5CF6'  # Purple
-    },
     'tomato': {
         'name': 'tomato',
         'display_name': 'Tomato',
@@ -132,16 +116,16 @@ def get_all_crops():
             "data": {
                 "crops": [
                     {
-                        "name": "brinjal",
-                        "display_name": "Brinjal (Eggplant)",
+                        "name": "tomato",
+                        "display_name": "Tomato",
                         "description": "...",
-                        "image": "/images/crops/brinjal.jpg",
-                        "diseases": ["Cercospora Leaf Spot", ...],
-                        "color": "#8B5CF6"
+                        "image": "/images/crops/tomato.jpg",
+                        "diseases": ["Early Blight", ...],
+                        "color": "#EF4444"
                     },
                     ...
                 ],
-                "total": 4
+                "total": 2
             }
         }
     """
@@ -169,7 +153,7 @@ def get_crop(crop_name):
     Get detailed information about a specific crop.
     
     Args:
-        crop_name: Name of the crop (brinjal, okra, tomato, chilli)
+        crop_name: Name of the crop (tomato, chilli)
         
     Returns:
         200: Crop details including diseases and treatments
@@ -179,10 +163,10 @@ def get_crop(crop_name):
         {
             "success": true,
             "data": {
-                "name": "brinjal",
-                "display_name": "Brinjal (Eggplant)",
+                "name": "tomato",
+                "display_name": "Tomato",
                 "description": "...",
-                "image": "/images/crops/brinjal.jpg",
+                "image": "/images/crops/tomato.jpg",
                 "diseases": [...],
                 "disease_count": 4
             }
@@ -272,7 +256,7 @@ def get_crop_names():
     Response Example:
         {
             "success": true,
-            "data": ["brinjal", "okra", "tomato", "chilli"]
+            "data": ["tomato", "chilli"]
         }
     """
     crops = load_crop_data()

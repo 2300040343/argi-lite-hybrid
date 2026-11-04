@@ -2,7 +2,7 @@
 
 ## Multi-Crop Plant Disease Detection Web + Edge System
 
-A production-ready plant disease detection system using a hybrid deep learning model (MobileNetV3 + EfficientNetV2-B0 with CBAM attention) for accurate disease identification in **Brinjal, Okra, Tomato, and Chilli** crops.
+A production-ready plant disease detection system using a hybrid deep learning model (MobileNetV3 + EfficientNetV2-B0 with CBAM attention) for accurate disease identification in **Tomato and Chilli** crops.
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
@@ -13,7 +13,9 @@ A production-ready plant disease detection system using a hybrid deep learning m
 
 ## 🎯 Features
 
-- **Multi-Crop Support**: Detect diseases in Brinjal, Okra, Tomato, and Chilli
+- **Multi-Crop Support**: Detect diseases in Tomato and Chilli
+  (Brinjal was evaluated but excluded - its standalone model collapsed to
+  15.8% accuracy from data leakage/class imbalance; see Limitations below)
 - **Hybrid AI Model**: MobileNetV3 + EfficientNetV2-B0 fused with CBAM attention
 - **Severity Assessment**: Classifies disease severity (Mild / Medium / Severe)
 - **Grad-CAM Heatmaps**: Visual explanation of model predictions
@@ -163,7 +165,7 @@ docker-compose down
 
 ```bash
 curl -X POST http://localhost:5000/api/predict \
-  -F "crop=brinjal" \
+  -F "crop=tomato" \
   -F "image=@path/to/image.jpg"
 ```
 
@@ -173,7 +175,7 @@ curl -X POST http://localhost:5000/api/predict \
 {
   "success": true,
   "data": {
-    "crop": "brinjal",
+    "crop": "tomato",
     "disease": "Cercospora Leaf Spot",
     "severity": "medium",
     "confidence": 98.7,
@@ -193,18 +195,6 @@ curl -X POST http://localhost:5000/api/predict \
 
 ## 🌿 Supported Crops & Diseases
 
-### Brinjal (Eggplant)
-- Cercospora Leaf Spot
-- Little Leaf Disease
-- Phomopsis Blight
-- Healthy
-
-### Okra (Ladies Finger)
-- Yellow Vein Mosaic
-- Powdery Mildew
-- Leaf Curl Disease
-- Healthy
-
 ### Tomato
 - Early Blight
 - Late Blight
@@ -218,6 +208,13 @@ curl -X POST http://localhost:5000/api/predict \
 - Anthracnose
 - Bacterial Leaf Spot
 - Healthy
+
+### Excluded: Brinjal (Eggplant)
+Brinjal was trained and evaluated but excluded from the final system - its
+standalone model collapsed to 15.82% accuracy (predicting "Healthy" for
+nearly all inputs), likely due to data leakage from splitting an
+already-augmented dataset after the fact. See
+METHODOLOGY_AND_TECHNICAL_REFERENCE.md for details and future work.
 
 ---
 

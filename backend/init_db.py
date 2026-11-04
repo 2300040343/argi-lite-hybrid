@@ -54,21 +54,6 @@ def init_database():
         # Seed crop data if not exists
         crops_data = [
             {
-                'name': 'brinjal',
-                'display_name': 'Brinjal (Eggplant)',
-                'description': 'Common vegetable crop susceptible to various fungal and viral diseases.',
-                'image_url': '/images/crops/brinjal.jpg',
-                'diseases': json.dumps([
-                    'Healthy',
-                    'Insect Pest Disease',
-                    'Leaf Spot Disease',
-                    'Mosaic Virus Disease',
-                    'Small Leaf Disease',
-                    'White Mold Disease',
-                    'Wilt Disease'
-                ])
-            },
-            {
                 'name': 'tomato',
                 'display_name': 'Tomato',
                 'description': 'Widely cultivated crop affected by various bacterial and fungal diseases.',
@@ -100,9 +85,6 @@ def init_database():
                     'Veinal Mottle Virus',
                     'Whitefly',
                     'Yellowish',
-                    'Healthy'
-                    'Anthracnose',
-                    'Bacterial Leaf Spot',
                     'Healthy'
                 ])
             }

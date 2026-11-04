@@ -71,7 +71,7 @@ class MLService:
         self.treatments = self.class_labels.get('treatments', {})
         self.crops = self.class_labels.get('crops', {})
         
-        # Hybrid model class mapping (26-class output)
+        # Hybrid model class mapping (19-class output)
         self.class_names = self.class_labels.get('class_names', [])
         self.class_to_display = self.class_labels.get('class_to_display', {})
         self.crop_class_ranges = self.class_labels.get('crop_class_ranges', {})
@@ -107,10 +107,6 @@ class MLService:
         """
         return {
             'class_names': [
-                'brinjal_Augmented_Healthy_Leaf', 'brinjal_Augmented_Insect_Pest_Disease',
-                'brinjal_Augmented_Leaf_Spot_Disease', 'brinjal_Augmented_Mosaic_Virus_Disease',
-                'brinjal_Augmented_Small_Leaf_Disease', 'brinjal_Augmented_White_Mold_Disease',
-                'brinjal_Augmented_Wilt_Disease',
                 'chilli_Chilli_Anthracnos', 'chilli_Chilli_Damping_Off',
                 'chilli_Chilli_Leaf_Curl_Virus', 'chilli_Chilli_Leaf_Spot',
                 'chilli_Chilli_Veinal_Mottle_Virus', 'chilli_Chilli__Whitefly',
@@ -122,15 +118,10 @@ class MLService:
                 'tomato_healthy', 'tomato_powdery_mildew'
             ],
             'crop_class_ranges': {
-                'brinjal': [0, 6], 'chilli': [7, 14], 'tomato': [15, 25]
+                'chilli': [0, 7], 'tomato': [8, 18]
             },
             'class_to_display': {},
             'crops': {
-                'brinjal': {
-                    'diseases': ['Healthy', 'Insect Pest Disease', 'Leaf Spot Disease',
-                                'Mosaic Virus Disease', 'Small Leaf Disease',
-                                'White Mold Disease', 'Wilt Disease']
-                },
                 'tomato': {
                     'diseases': ['Bacterial Spot', 'Early Blight', 'Late Blight',
                                 'Leaf Mold', 'Septoria Leaf Spot',
@@ -253,7 +244,7 @@ class MLService:
         
         Args:
             image_data: Raw image bytes
-            crop: Crop type (brinjal, okra, tomato, chilli)
+            crop: Crop type (tomato, chilli)
             temperature: Optional environmental temperature (°C)
             humidity: Optional environmental humidity (%)
             
@@ -314,8 +305,20 @@ class MLService:
                     predictions[0], crop
                 )
             else:
-                # Placeholder prediction for development
-                disease, confidence = self._placeholder_prediction(crop, crop_diseases)
+                # No real model available - fail explicitly rather than
+                # silently returning a fake/random diagnosis to the user
+                logger.error(
+                    "Prediction requested but no model is loaded "
+                    "(missing/corrupt model file or failed TensorFlow import)"
+                )
+                return {
+                    'success': False,
+                    'error': (
+                        'The disease detection model is currently unavailable. '
+                        'Please try again later or contact support.'
+                    ),
+                    'original_image_base64': self._image_to_base64(image_data),
+                }
             
             # Reject cross-crop mismatch
             if mismatch_crop:
@@ -333,7 +336,7 @@ class MLService:
             # (pre-inference CV validation already filters non-plant images)
             if self.model_loaded:
                 crop_range = self.crop_class_ranges.get(crop)
-                num_crop_classes = (crop_range[1] - crop_range[0] + 1) if crop_range else 26
+                num_crop_classes = (crop_range[1] - crop_range[0] + 1) if crop_range else 19
                 random_chance = 1.0 / num_crop_classes
                 if confidence < random_chance:
                     logger.warning(
@@ -368,9 +371,7 @@ class MLService:
                 'heatmap_base64': heatmap_base64,
                 'original_image_base64': original_base64,
                 'environmental_risk': environmental_risk,
-                'model_used': 'keras' if (self.model_loaded and not self.use_tflite) else (
-                    'tflite' if self.use_tflite else 'placeholder'
-                )
+                'model_used': 'keras' if not self.use_tflite else 'tflite'
             }
             
         except Exception as e:
@@ -386,15 +387,15 @@ class MLService:
         crop: str
     ) -> tuple:
         """
-        Map 26-class hybrid model output to a crop-specific disease.
+        Map 19-class hybrid model output to a crop-specific disease.
         
         Filters predictions to only classes belonging to the requested crop,
         then picks the highest-confidence class within that crop.
         Also detects cross-crop mismatches.
         
         Args:
-            predictions: Model output array of shape (26,)
-            crop: Requested crop type (brinjal, chilli, tomato)
+            predictions: Model output array of shape (19,)
+            crop: Requested crop type (chilli, tomato)
             
         Returns:
             Tuple of (display_disease_name, confidence, mismatch_crop_or_None)
@@ -540,45 +541,6 @@ class MLService:
         logger.debug(f"Image validation passed: {scores}")
         return {'valid': True, 'reason': '', 'scores': scores}
 
-    def _placeholder_prediction(
-        self,
-        crop: str,
-        diseases: List[str]
-    ) -> tuple:
-        """
-        Generate placeholder prediction for development.
-        
-        Args:
-            crop: Crop type
-            diseases: List of possible diseases
-            
-        Returns:
-            Tuple of (disease_name, confidence)
-        """
-        # Weighted random selection (healthy should be less common for demo)
-        weights = []
-        for d in diseases:
-            if d.lower() == 'healthy':
-                weights.append(0.2)  # 20% chance healthy
-            else:
-                weights.append(0.8 / (len(diseases) - 1))  # Split remaining among diseases
-        
-        # Normalize weights
-        total = sum(weights)
-        weights = [w / total for w in weights]
-        
-        disease = random.choices(diseases, weights=weights, k=1)[0]
-        
-        # Generate realistic confidence (0-1 ratio)
-        if disease.lower() == 'healthy':
-            confidence = random.uniform(0.85, 0.99)
-        else:
-            confidence = random.uniform(0.75, 0.98)
-        
-        logger.info(f"Placeholder prediction: {disease} ({confidence*100:.1f}%)")
-        
-        return disease, confidence
-    
     def _determine_severity(self, disease: str, confidence: float) -> str:
         """
         Determine disease severity based on prediction.

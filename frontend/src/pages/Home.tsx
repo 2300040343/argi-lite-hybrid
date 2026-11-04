@@ -53,13 +53,6 @@ const Home: React.FC = () => {
   // ---------------------------------------------------------------------------
   const crops = [
     {
-      name: 'Brinjal',
-      nameLocal: 'बैंगन',
-      diseases: 7,
-      color: 'bg-purple-500',
-      image: '🍆',
-    },
-    {
       name: 'Tomato',
       nameLocal: 'टमाटर',
       diseases: 11,

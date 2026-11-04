@@ -10,7 +10,7 @@ logs/
 │   ├── training_YYYYMMDD_HHMMSS.log      # Full training log
 │   ├── training_metrics_YYYYMMDD_HHMMSS.csv  # CSV metrics
 │   └── agrilite_hybrid_YYYYMMDD_HHMMSS.log   # Session log
-├── brinjal/                         # Brinjal model logs
+├── chilli/                           # Chilli model logs
 ├── tomato/                          # Tomato model logs
 └── chilli/                          # Chilli model logs
 ```

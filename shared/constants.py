@@ -6,7 +6,7 @@ Common constants used by both backend and edge deployment
 # =============================================================================
 # Supported Crops
 # =============================================================================
-SUPPORTED_CROPS = ['brinjal', 'tomato', 'chilli']
+SUPPORTED_CROPS = ['tomato', 'chilli']
 
 # =============================================================================
 # Image Processing Constants
@@ -66,7 +66,7 @@ ENVIRONMENTAL_THRESHOLDS = {
 # =============================================================================
 MESSAGES = {
     'PREDICTION_SUCCESS': 'Disease prediction completed successfully',
-    'INVALID_CROP': 'Invalid crop type. Supported crops: brinjal, okra, tomato, chilli',
+    'INVALID_CROP': 'Invalid crop type. Supported crops: tomato, chilli',
     'INVALID_IMAGE': 'Invalid or corrupt image file',
     'MODEL_ERROR': 'Error during model inference',
     'UPLOAD_ERROR': 'Error processing uploaded image'

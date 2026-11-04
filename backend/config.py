@@ -157,10 +157,43 @@ class ProductionConfig(Config):
     # Stricter rate limits for production
     RATELIMIT_DEFAULT = '100 per hour'
     
+    # No insecure fallback in production - must be set via environment
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    
+    # Wildcard CORS is not allowed in production - must list real origins
+    CORS_ORIGINS = [
+        o for o in os.getenv('CORS_ORIGINS', '').split(',') if o and o != '*'
+    ]
+    
+    # Shorter-lived access tokens in production to limit stolen-token exposure
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
+    
     # Secure cookie settings for production
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Strict'
+
+    @classmethod
+    def validate(cls):
+        """Fail fast if production is started with insecure/missing settings."""
+        errors = []
+        if not cls.SECRET_KEY:
+            errors.append('SECRET_KEY environment variable is required in production')
+        if not cls.JWT_SECRET_KEY:
+            errors.append('JWT_SECRET_KEY environment variable is required in production')
+        if not cls.SQLALCHEMY_DATABASE_URI:
+            errors.append('DATABASE_URL environment variable is required in production')
+        if not cls.CORS_ORIGINS:
+            errors.append(
+                'CORS_ORIGINS environment variable is required in production '
+                '(comma-separated list of allowed origins, no wildcard "*")'
+            )
+        if errors:
+            raise RuntimeError(
+                'Insecure production configuration:\n- ' + '\n- '.join(errors)
+            )
 
 
 # =============================================================================

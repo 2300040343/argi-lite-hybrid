@@ -19,10 +19,14 @@ AgriLite-Hybrid is a multi-crop disease detection platform with:
 - Optional edge deployment path (TFLite-ready)
 
 Supported crops and class counts:
-- Brinjal: 7 classes
 - Chilli: 8 classes
 - Tomato: 11 classes
-- Total: 26 classes
+- Total: 19 classes
+
+(Brinjal was trained and evaluated separately but excluded from the final
+system - its standalone model collapsed to 15.82% accuracy, 0.061 F1-macro,
+likely due to data leakage from splitting an already-augmented dataset after
+the fact, combined with severe class imbalance. See Section 6 for details.)
 
 ## 3. Methodology
 
@@ -55,11 +59,11 @@ Hybrid architecture flow:
 3. Feature concatenation
 4. CBAM attention (ChannelAttention + SpatialAttention)
 5. Dense classification head
-6. Softmax output over 26 classes
+5. Softmax output over 19 classes
 
 Core model/training values:
 - Input shape: (224, 224, 3)
-- Num classes: 26
+- Num classes: 19
 - Batch size: 32
 - Total epochs: 100
 - Initial training epochs: 25
@@ -105,9 +109,8 @@ Inference service behavior:
 9. Return structured JSON response
 
 Crop ranges used in mapping:
-- brinjal: [0, 6]
-- chilli: [7, 14]
-- tomato: [15, 25]
+- chilli: [0, 7]
+- tomato: [8, 18]
 
 Image validation thresholds:
 - green_ratio must be >= 0.15
@@ -315,7 +318,7 @@ Failure response (400) sample for crop mismatch:
 ### 7.4 Predict (Base64)
 Request:
 {
-  "crop": "brinjal",
+  "crop": "tomato",
   "image_base64": "data:image/jpeg;base64,<...>",
   "temperature": 28.0,
   "humidity": 65.0
@@ -343,19 +346,18 @@ Request:
 
 Model metadata values:
 - model: AgriLite-Hybrid
-- num_classes: 26
+- num_classes: 19
 - severity_levels: mild, medium, severe
 
 Class mapping samples:
-- brinjal_Augmented_Healthy_Leaf -> Healthy
 - chilli_Chilli_Leaf_Curl_Virus -> Leaf Curl Virus
 - tomato_Septoria_leaf_spot -> Septoria Leaf Spot
 
-Treatment sample for Insect Pest Disease (severe):
-- Apply systemic insecticide (imidacloprid)
-- Remove and destroy severely infested plant parts
-- Consider biological control agents
-- Rotate insecticides to prevent resistance
+Treatment sample for Leaf Curl Virus (severe):
+- Remove all infected plants immediately
+- Treat entire field for whitefly vectors
+- Plant only resistant varieties (Ty gene)
+- Install insect-proof nets for nursery
 
 ## 9. Deployment and Runtime Values
 
@@ -400,9 +402,11 @@ Evaluation script behavior:
 - Builds standalone vs hybrid comparison JSON
 
 Embedded standalone baseline samples:
-- Brinjal standalone accuracy: 0.1582
 - Chilli standalone accuracy: 0.9292
 - Tomato standalone accuracy: 0.9634
+
+(Brinjal standalone accuracy was 0.1582 - excluded from the final system;
+see Section 6 and the Limitations note above.)
 
 ## 11. Reproducibility Checklist
 - Set Python, TensorFlow, and Node versions according to requirements

@@ -48,7 +48,7 @@ def predict():
         Content-Type: multipart/form-data
         
         Fields:
-            crop (str): Crop type (brinjal, okra, tomato, chilli) - required
+            crop (str): Crop type (tomato, chilli) - required
             image (file): Image file (jpg, jpeg, png, webp) - required
             temperature (float): Environmental temperature in °C - optional
             humidity (float): Environmental humidity in % - optional
@@ -63,8 +63,8 @@ def predict():
         {
             "success": true,
             "data": {
-                "crop": "brinjal",
-                "disease": "Cercospora Leaf Spot",
+                "crop": "tomato",
+                "disease": "Early Blight",
                 "severity": "medium",
                 "confidence": 98.7,
                 "treatment": ["Remove infected leaves...", ...],
@@ -83,14 +83,14 @@ def predict():
     if not crop:
         return error_response(
             'Crop type is required',
-            details={'field': 'crop', 'allowed': ['brinjal', 'tomato', 'chilli']},
+            details={'field': 'crop', 'allowed': ['tomato', 'chilli']},
             status_code=400
         )
     
     if not validate_crop(crop):
         return error_response(
             f"Invalid crop type: '{crop}'",
-            details={'allowed': ['brinjal', 'tomato', 'chilli']},
+            details={'allowed': ['tomato', 'chilli']},
             status_code=400
         )
     
@@ -218,7 +218,7 @@ def predict_base64():
     
     Request Body:
         {
-            "crop": "brinjal",
+            "crop": "tomato",
             "image_base64": "data:image/jpeg;base64,...",
             "temperature": 28.5,  // optional
             "humidity": 65.0      // optional
@@ -237,7 +237,7 @@ def predict_base64():
     if not crop or not validate_crop(crop):
         return error_response(
             'Valid crop type is required',
-            details={'allowed': ['brinjal', 'tomato', 'chilli']},
+            details={'allowed': ['tomato', 'chilli']},
             status_code=400
         )
     

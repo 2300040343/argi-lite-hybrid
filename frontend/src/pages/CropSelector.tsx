@@ -23,13 +23,11 @@ interface CropCardProps {
 
 const CropCard: React.FC<CropCardProps> = ({ crop, isSelected, onSelect }) => {
   const colorMap: Record<string, string> = {
-    brinjal: 'from-purple-400 to-purple-600',
     tomato: 'from-red-400 to-red-600',
     chilli: 'from-orange-400 to-orange-600',
   };
 
   const emojiMap: Record<string, string> = {
-    brinjal: '🍆',
     tomato: '🍅',
     chilli: '🌶️',
   };
@@ -92,14 +90,6 @@ const CropSelector: React.FC = () => {
           // Fallback data if API fails
           setCrops([
             {
-              name: 'brinjal',
-              display_name: 'Brinjal (Eggplant)',
-              description: 'Detect diseases like Leaf Spot, Mosaic Virus, Wilt, and more.',
-              image: '/images/crops/brinjal.jpg',
-              diseases: ['Healthy', 'Insect Pest Disease', 'Leaf Spot Disease', 'Mosaic Virus Disease', 'Small Leaf Disease', 'White Mold Disease', 'Wilt Disease'],
-              color: '#8B5CF6',
-            },
-            {
               name: 'tomato',
               display_name: 'Tomato',
               description: 'Detect Early Blight, Late Blight, Leaf Mold, Septoria, and more.',
@@ -122,14 +112,6 @@ const CropSelector: React.FC = () => {
         setError('Failed to load crops. Using default data.');
         // Set fallback crops
         setCrops([
-          {
-            name: 'brinjal',
-            display_name: 'Brinjal (Eggplant)',
-            description: 'Detect diseases like Leaf Spot, Mosaic Virus, Wilt, and more.',
-            image: '/images/crops/brinjal.jpg',
-            diseases: ['Healthy', 'Insect Pest Disease', 'Leaf Spot Disease', 'Mosaic Virus Disease', 'Small Leaf Disease', 'White Mold Disease', 'Wilt Disease'],
-            color: '#8B5CF6',
-          },
           {
             name: 'tomato',
             display_name: 'Tomato',

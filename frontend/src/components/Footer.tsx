@@ -65,10 +65,6 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold text-gray-900 mb-4">Supported Crops</h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                <span>Brinjal (Eggplant)</span>
-              </li>
-              <li className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                 <span>Tomato</span>
               </li>

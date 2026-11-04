@@ -214,13 +214,12 @@ class AgriLiteHybridInference:
                 return data['classes']
         
         logger.warning(f"Labels file not found: {labels_path}")
-        return [f"Class_{i}" for i in range(26)]  # Default
+        return [f"Class_{i}" for i in range(19)]  # Default
     
     def _categorize_classes(self) -> Dict[str, List[int]]:
         """Categorize classes by crop type."""
         
         crops = {
-            'brinjal': [],
             'tomato': [],
             'chilli': [],
             'unknown': []
@@ -228,9 +227,7 @@ class AgriLiteHybridInference:
         
         for idx, name in enumerate(self.class_labels):
             name_lower = name.lower()
-            if 'brinjal' in name_lower or 'eggplant' in name_lower or 'augmented' in name_lower:
-                crops['brinjal'].append(idx)
-            elif 'tomato' in name_lower:
+            if 'tomato' in name_lower:
                 crops['tomato'].append(idx)
             elif 'chilli' in name_lower or 'pepper' in name_lower:
                 crops['chilli'].append(idx)
@@ -334,7 +331,7 @@ class AgriLiteHybridInference:
         
         # Get disease name (remove crop prefix)
         disease = class_name
-        for prefix in ['brinjal_', 'tomato_', 'chilli_', 'eggplant_']:
+        for prefix in ['tomato_', 'chilli_']:
             if disease.lower().startswith(prefix):
                 disease = disease[len(prefix):]
                 break
@@ -569,7 +566,7 @@ def predict_image(args):
     print("🌱 AGRILITE-HYBRID PREDICTION")
     print("="*50)
     
-    crop_emoji = {'brinjal': '🍆', 'tomato': '🍅', 'chilli': '🌶️', 'unknown': '🌿'}
+    crop_emoji = {'tomato': '🍅', 'chilli': '🌶️', 'unknown': '🌿'}
     emoji = crop_emoji.get(result['crop'], '🌿')
     
     print(f"\n{emoji} Crop: {result['crop'].upper()}")

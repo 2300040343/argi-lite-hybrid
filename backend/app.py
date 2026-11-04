@@ -37,6 +37,10 @@ def create_app(config_name=None):
     # Load configuration
     app.config.from_object(config[config_name])
     
+    # Fail fast if production is misconfigured (missing secrets, wildcard CORS, etc.)
+    if config_name == 'production':
+        config['production'].validate()
+    
     # Setup logging
     setup_logging(app)
     
@@ -100,8 +104,11 @@ def init_extensions(app):
     
     # CORS - Cross Origin Resource Sharing
     # Initialize CORS directly with the app for proper preflight handling
+    # Restricted to configured origins (CORS_ORIGINS env var) - never wildcard
+    # in production, since supports_credentials=True combined with "*" would
+    # allow any site to make authenticated requests on a user's behalf.
     from flask_cors import CORS
-    CORS(app, resources={r"/*": {"origins": "*"}}, 
+    CORS(app, resources={r"/*": {"origins": app.config.get('CORS_ORIGINS', ['*'])}},
          supports_credentials=False,
          allow_headers=['Content-Type', 'Authorization', 'X-Requested-With'],
          methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'])

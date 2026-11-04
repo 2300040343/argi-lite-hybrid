@@ -12,9 +12,9 @@ services:
     container_name: agrilite-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: agrilite
-      POSTGRES_PASSWORD: agrilite_dev_password
-      POSTGRES_DB: agrilite
+      POSTGRES_USER: ${POSTGRES_USER:-agrilite}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-agrilite_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-agrilite}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -33,10 +33,12 @@ services:
     container_name: agrilite-backend
     restart: unless-stopped
     environment:
-      - FLASK_ENV=development
-      - DATABASE_URL=postgresql://agrilite:agrilite_dev_password@db:5432/agrilite
-      - SECRET_KEY=dev-secret-key-change-in-production
-      - JWT_SECRET_KEY=dev-jwt-secret-change-in-production
+      - FLASK_ENV=${FLASK_ENV:-development}
+      - DATABASE_URL=${DATABASE_URL:-postgresql://agrilite:agrilite_dev_password@db:5432/agrilite}
+      # SECRET_KEY / JWT_SECRET_KEY: set these in a local .env file (gitignored),
+      # never commit real secrets here. Defaults below are for local dev only.
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-in-production}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-jwt-secret-change-in-production}
     volumes:
       - ./backend:/app
       - ./models:/app/models

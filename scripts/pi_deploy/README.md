@@ -55,7 +55,7 @@ python3 web_server_pi.py --port 8080
 
 ### Option 3: Camera Capture
 ```bash
-python3 predict_pi.py --camera --crop brinjal
+python3 predict_pi.py --camera --crop tomato
 ```
 
 ## Model Files

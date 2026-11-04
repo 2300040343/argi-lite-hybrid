@@ -7,8 +7,6 @@ with crop-prefixed class names for AgriLite-Hybrid model training.
 Creates structure:
 DataSets/combined/
 ├── train/
-│   ├── brinjal_healthy/
-│   ├── brinjal_diseased/
 │   ├── tomato_bacterial_spot/
 │   ├── tomato_healthy/
 │   ├── chilli_healthy/
@@ -37,18 +35,9 @@ BASE_DIR = os.path.join(PROJECT_ROOT, "DataSets")
 OUTPUT_DIR = os.path.join(BASE_DIR, "combined")
 
 # Crop dataset paths and configurations
+# NOTE: Brinjal was removed - its standalone model collapsed to 15.82% accuracy
+# (likely data leakage from splitting after augmentation). See METHODOLOGY doc.
 CROP_CONFIGS = {
-    'brinjal': {
-        'path': os.path.join(BASE_DIR, "eggplant", "Eggplant Disease Recognition Dataset", 
-                             "Augmented Images (Version 02)", "Augmented Images (Version 02)"),
-        'splits': {
-            'train': None,  # Single folder - will auto-split
-            'val': None,
-            'test': None
-        },
-        'split_ratio': [0.8, 0.1, 0.1],  # train/val/test
-        'prefix': 'brinjal'
-    },
     'tomato': {
         'path': os.path.join(BASE_DIR, "tamota"),
         'splits': {
@@ -139,7 +128,7 @@ def combine_datasets(use_symlinks=False, verbose=True):
     
     print("\n" + "="*70)
     print("🌱 AGRILITE DATASET COMBINER")
-    print("   Merging: 🍆 Brinjal + 🍅 Tomato + 🌶️ Chilli")
+    print("   Merging:  Tomato + 🌶️ Chilli")
     print("="*70)
     
     random.seed(42)  # For reproducible splits
@@ -158,7 +147,7 @@ def combine_datasets(use_symlinks=False, verbose=True):
     
     for crop_name, config in CROP_CONFIGS.items():
         print(f"\n{'='*50}")
-        emoji = "🍆" if crop_name == "brinjal" else "🍅" if crop_name == "tomato" else "🌶️"
+        emoji = "" if crop_name == "tomato" else "🌶️"
         print(f"{emoji} Processing {crop_name.upper()}")
         print(f"{'='*50}")
         
@@ -284,7 +273,7 @@ def combine_datasets(use_symlinks=False, verbose=True):
     
     print(f"\n📈 Per-Crop Statistics:")
     for crop_name, crop_stats in stats['crops'].items():
-        emoji = "🍆" if crop_name == "brinjal" else "🍅" if crop_name == "tomato" else "🌶️"
+        emoji = "" if crop_name == "tomato" else "🌶️"
         total = crop_stats['train'] + crop_stats['val'] + crop_stats['test']
         print(f"   {emoji} {crop_name.capitalize():10s}: {total:6d} images")
         print(f"       Train: {crop_stats['train']:5d} | Val: {crop_stats['val']:5d} | Test: {crop_stats['test']:5d}")
@@ -300,7 +289,7 @@ def combine_datasets(use_symlinks=False, verbose=True):
     
     print(f"\n📋 All Classes ({len(stats['classes'])}):")
     for i, class_name in enumerate(stats['classes']):
-        crop = "🍆" if "brinjal" in class_name else "🍅" if "tomato" in class_name else "🌶️"
+        crop = "�" if "tomato" in class_name else "🌶️"
         print(f"   {i+1:2d}. {crop} {class_name}")
     
     # Save class mapping
@@ -309,7 +298,6 @@ def combine_datasets(use_symlinks=False, verbose=True):
         'classes': stats['classes'],
         'num_classes': len(stats['classes']),
         'crops': {
-            'brinjal': [c for c in stats['classes'] if 'brinjal' in c],
             'tomato': [c for c in stats['classes'] if 'tomato' in c],
             'chilli': [c for c in stats['classes'] if 'chilli' in c]
         },
@@ -394,6 +382,8 @@ if __name__ == "__main__":
         else:
             if args.force and os.path.exists(OUTPUT_DIR):
                 print(f"Removing existing dataset: {OUTPUT_DIR}")
-                shutil.rmtree(OUTPUT_DIR)
+                # Use long_path() prefix - plain shutil.rmtree fails on Windows
+                # with "directory not empty" / FileNotFoundError on long paths
+                shutil.rmtree(long_path(OUTPUT_DIR))
             
             combine_datasets()

@@ -4,7 +4,7 @@ AgriLite-Hybrid: Evaluate Trained Model
 Evaluates the hybrid model on the test set and produces:
 - final_metrics.json (overall accuracy, F1 scores)
 - classification_report.json (per-class precision, recall, F1)
-- Per-crop accuracy breakdown (brinjal, chilli, tomato separately)
+- Per-crop accuracy breakdown (chilli, tomato separately)
 - Confusion matrix plots (overall + per-crop)
 - Standalone vs Hybrid comparison table
 
@@ -61,21 +61,14 @@ INPUT_SHAPE = (224, 224)
 BATCH_SIZE = 32
 
 # Crop class ranges (from hybrid training)
+# Brinjal removed - its standalone model collapsed to 15.82% accuracy
 CROP_RANGES = {
-    'brinjal': (0, 6),    # indices 0-6 (7 classes)
-    'chilli': (7, 14),    # indices 7-14 (8 classes)
-    'tomato': (15, 25),   # indices 15-25 (11 classes)
+    'chilli': (0, 7),     # indices 0-7 (8 classes)
+    'tomato': (8, 18),    # indices 8-18 (11 classes)
 }
 
 # Standalone model metrics for comparison
 STANDALONE_METRICS = {
-    'brinjal': {
-        'model': 'EfficientNetV2-B0 + CBAM',
-        'accuracy': 0.1582,
-        'f1_macro': 0.0610,
-        'f1_weighted': 0.0610,
-        'status': 'Failed (model collapse)'
-    },
     'chilli': {
         'model': 'MobileNetV3-Small',
         'accuracy': 0.9292,
@@ -386,7 +379,7 @@ def plot_confusion_matrix(y_true, y_pred, class_names, title, save_path):
     for name in class_names:
         # Remove common prefixes
         short = name
-        for prefix in ['brinjal_Augmented_', 'chilli_Chilli_', 'chilli_Chilli__', 'tomato_']:
+        for prefix in ['chilli_Chilli_', 'chilli_Chilli__', 'tomato_']:
             if short.startswith(prefix):
                 short = short[len(prefix):]
                 break

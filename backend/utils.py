@@ -77,7 +77,7 @@ def validate_crop(crop: str) -> bool:
     Returns:
         bool: True if crop is supported, False otherwise
     """
-    supported_crops = ['brinjal', 'tomato', 'chilli']
+    supported_crops = ['tomato', 'chilli']
     return crop.lower() in supported_crops
 
 

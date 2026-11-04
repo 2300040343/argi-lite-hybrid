@@ -36,7 +36,7 @@ CORS(app)
 predictor = None
 
 # Supported crops
-SUPPORTED_CROPS = ["brinjal", "okra", "tomato", "chilli"]
+SUPPORTED_CROPS = ["tomato", "chilli"]
 
 # =============================================================================
 # HTML Templates
@@ -104,8 +104,6 @@ INDEX_HTML = """
                     <label for="crop">Select Crop</label>
                     <select id="crop" name="crop" required>
                         <option value="">Choose crop...</option>
-                        <option value="brinjal">🍆 Brinjal</option>
-                        <option value="okra">🥒 Okra</option>
                         <option value="tomato">🍅 Tomato</option>
                         <option value="chilli">🌶️ Chilli</option>
                     </select>
@@ -328,7 +326,7 @@ def predict():
     Predict disease from uploaded image.
     
     Expected form data:
-    - crop: string (brinjal, okra, tomato, chilli)
+    - crop: string (tomato, chilli)
     - image: file (JPEG, PNG)
     """
     global predictor
@@ -448,7 +446,7 @@ def capture_and_predict():
     Capture image from Pi camera and predict disease.
     
     Query parameters:
-    - crop: string (brinjal, okra, tomato, chilli)
+    - crop: string (tomato, chilli)
     """
     global predictor
     

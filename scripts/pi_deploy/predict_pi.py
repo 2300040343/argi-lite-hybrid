@@ -256,7 +256,7 @@ class AgriLitePredictor:
         
         Args:
             image_path: Path to image file
-            crop: Crop type (brinjal, okra, tomato, chilli)
+            crop: Crop type (tomato, chilli)
         
         Returns:
             Dictionary with prediction results
@@ -361,7 +361,7 @@ def main():
         "--crop",
         type=str,
         required=True,
-        choices=["brinjal", "okra", "tomato", "chilli"],
+        choices=["tomato", "chilli"],
         help="Crop type for prediction"
     )
     parser.add_argument(

@@ -1,14 +1,7 @@
 {
   "model": "AgriLite-Hybrid",
-  "num_classes": 26,
+  "num_classes": 19,
   "class_names": [
-    "brinjal_Augmented_Healthy_Leaf",
-    "brinjal_Augmented_Insect_Pest_Disease",
-    "brinjal_Augmented_Leaf_Spot_Disease",
-    "brinjal_Augmented_Mosaic_Virus_Disease",
-    "brinjal_Augmented_Small_Leaf_Disease",
-    "brinjal_Augmented_White_Mold_Disease",
-    "brinjal_Augmented_Wilt_Disease",
     "chilli_Chilli_Anthracnos",
     "chilli_Chilli_Damping_Off",
     "chilli_Chilli_Leaf_Curl_Virus",
@@ -30,41 +23,27 @@
     "tomato_powdery_mildew"
   ],
   "class_indices": {
-    "brinjal_Augmented_Healthy_Leaf": 0,
-    "brinjal_Augmented_Insect_Pest_Disease": 1,
-    "brinjal_Augmented_Leaf_Spot_Disease": 2,
-    "brinjal_Augmented_Mosaic_Virus_Disease": 3,
-    "brinjal_Augmented_Small_Leaf_Disease": 4,
-    "brinjal_Augmented_White_Mold_Disease": 5,
-    "brinjal_Augmented_Wilt_Disease": 6,
-    "chilli_Chilli_Anthracnos": 7,
-    "chilli_Chilli_Damping_Off": 8,
-    "chilli_Chilli_Leaf_Curl_Virus": 9,
-    "chilli_Chilli_Leaf_Spot": 10,
-    "chilli_Chilli_Veinal_Mottle_Virus": 11,
-    "chilli_Chilli__Whitefly": 12,
-    "chilli_Chilli__Yellowish": 13,
-    "chilli_Chilli__healthy": 14,
-    "tomato_Bacterial_spot": 15,
-    "tomato_Early_blight": 16,
-    "tomato_Late_blight": 17,
-    "tomato_Leaf_Mold": 18,
-    "tomato_Septoria_leaf_spot": 19,
-    "tomato_Spider_mites_Two_spotted_spider_mite": 20,
-    "tomato_Target_Spot": 21,
-    "tomato_Tomato_Yellow_Leaf_Curl_Virus": 22,
-    "tomato_Tomato_mosaic_virus": 23,
-    "tomato_healthy": 24,
-    "tomato_powdery_mildew": 25
+    "chilli_Chilli_Anthracnos": 0,
+    "chilli_Chilli_Damping_Off": 1,
+    "chilli_Chilli_Leaf_Curl_Virus": 2,
+    "chilli_Chilli_Leaf_Spot": 3,
+    "chilli_Chilli_Veinal_Mottle_Virus": 4,
+    "chilli_Chilli__Whitefly": 5,
+    "chilli_Chilli__Yellowish": 6,
+    "chilli_Chilli__healthy": 7,
+    "tomato_Bacterial_spot": 8,
+    "tomato_Early_blight": 9,
+    "tomato_Late_blight": 10,
+    "tomato_Leaf_Mold": 11,
+    "tomato_Septoria_leaf_spot": 12,
+    "tomato_Spider_mites_Two_spotted_spider_mite": 13,
+    "tomato_Target_Spot": 14,
+    "tomato_Tomato_Yellow_Leaf_Curl_Virus": 15,
+    "tomato_Tomato_mosaic_virus": 16,
+    "tomato_healthy": 17,
+    "tomato_powdery_mildew": 18
   },
   "class_to_display": {
-    "brinjal_Augmented_Healthy_Leaf": "Healthy",
-    "brinjal_Augmented_Insect_Pest_Disease": "Insect Pest Disease",
-    "brinjal_Augmented_Leaf_Spot_Disease": "Leaf Spot Disease",
-    "brinjal_Augmented_Mosaic_Virus_Disease": "Mosaic Virus Disease",
-    "brinjal_Augmented_Small_Leaf_Disease": "Small Leaf Disease",
-    "brinjal_Augmented_White_Mold_Disease": "White Mold Disease",
-    "brinjal_Augmented_Wilt_Disease": "Wilt Disease",
     "chilli_Chilli_Anthracnos": "Anthracnose",
     "chilli_Chilli_Damping_Off": "Damping Off",
     "chilli_Chilli_Leaf_Curl_Virus": "Leaf Curl Virus",
@@ -86,25 +65,10 @@
     "tomato_powdery_mildew": "Powdery Mildew"
   },
   "crop_class_ranges": {
-    "brinjal": [0, 6],
-    "chilli": [7, 14],
-    "tomato": [15, 25]
+    "chilli": [0, 7],
+    "tomato": [8, 18]
   },
   "crops": {
-    "brinjal": {
-      "name": "Brinjal (Eggplant)",
-      "image": "/images/crops/brinjal.jpg",
-      "description": "Common vegetable crop susceptible to various fungal and viral diseases",
-      "diseases": [
-        "Healthy",
-        "Insect Pest Disease",
-        "Leaf Spot Disease",
-        "Mosaic Virus Disease",
-        "Small Leaf Disease",
-        "White Mold Disease",
-        "Wilt Disease"
-      ]
-    },
     "tomato": {
       "name": "Tomato",
       "image": "/images/crops/tomato.jpg",
@@ -160,120 +124,6 @@
         "Plants appear healthy",
         "Continue excellent management practices",
         "Consider preventive measures during high-risk periods"
-      ]
-    },
-    "Insect Pest Disease": {
-      "mild": [
-        "Monitor for insect activity regularly",
-        "Apply neem oil spray as a preventive measure",
-        "Use yellow sticky traps to detect pests early"
-      ],
-      "medium": [
-        "Apply organic insecticide (pyrethrin-based)",
-        "Remove heavily damaged leaves",
-        "Introduce beneficial insects like ladybugs",
-        "Check undersides of leaves for eggs and larvae"
-      ],
-      "severe": [
-        "Apply systemic insecticide (imidacloprid)",
-        "Remove and destroy severely infested plant parts",
-        "Consider biological control agents",
-        "Rotate insecticides to prevent resistance"
-      ]
-    },
-    "Leaf Spot Disease": {
-      "mild": [
-        "Remove affected leaves and dispose properly",
-        "Apply neem oil spray once a week",
-        "Ensure good air circulation around plants"
-      ],
-      "medium": [
-        "Remove all infected leaves immediately",
-        "Apply copper-based fungicide every 7-10 days",
-        "Reduce overhead watering",
-        "Apply organic mulch to prevent soil splash"
-      ],
-      "severe": [
-        "Remove heavily infected plants to prevent spread",
-        "Apply systemic fungicide (mancozeb or chlorothalonil)",
-        "Treat surrounding plants preventively",
-        "Rotate crops next season"
-      ]
-    },
-    "Mosaic Virus Disease": {
-      "mild": [
-        "Remove and destroy infected leaves",
-        "Control aphid vectors with neem spray",
-        "Disinfect tools after each use"
-      ],
-      "medium": [
-        "Remove infected plants to prevent spread",
-        "Apply systemic insecticide for aphid control",
-        "Use reflective mulch to repel vectors",
-        "Avoid touching healthy plants after handling infected ones"
-      ],
-      "severe": [
-        "Remove and burn all infected plants",
-        "Intensive aphid and whitefly control program",
-        "Plant virus-resistant varieties",
-        "Sanitize entire growing area"
-      ]
-    },
-    "Small Leaf Disease": {
-      "mild": [
-        "Monitor plant growth closely",
-        "Apply balanced fertilizer to boost immunity",
-        "Control leafhopper vectors with neem spray"
-      ],
-      "medium": [
-        "Remove symptomatic plants",
-        "Spray imidacloprid for vector control",
-        "Apply micronutrient foliar spray",
-        "Maintain field hygiene"
-      ],
-      "severe": [
-        "Remove and destroy all infected plants",
-        "Treat entire field for leafhopper control",
-        "Plant disease-resistant varieties",
-        "Avoid planting during peak vector season"
-      ]
-    },
-    "White Mold Disease": {
-      "mild": [
-        "Improve air circulation around plants",
-        "Reduce humidity by adjusting irrigation",
-        "Remove affected plant debris"
-      ],
-      "medium": [
-        "Apply fungicide (iprodione or vinclozolin)",
-        "Remove infected plant parts and destroy",
-        "Increase plant spacing",
-        "Avoid excessive nitrogen fertilization"
-      ],
-      "severe": [
-        "Remove entire infected plants",
-        "Apply soil drench fungicide",
-        "Solarize soil before next planting",
-        "Rotate with non-host crops for 3+ years"
-      ]
-    },
-    "Wilt Disease": {
-      "mild": [
-        "Ensure proper drainage in growing area",
-        "Apply beneficial microorganisms (Trichoderma)",
-        "Maintain balanced soil pH (6.0-7.0)"
-      ],
-      "medium": [
-        "Remove wilting plants immediately",
-        "Apply systemic fungicide (carbendazim)",
-        "Solarize the soil for 4-6 weeks",
-        "Add organic matter to improve soil health"
-      ],
-      "severe": [
-        "Remove and destroy all infected plants",
-        "Treat soil with fumigant or bio-agent",
-        "Plant resistant rootstock varieties",
-        "Implement crop rotation with non-solanaceous crops"
       ]
     },
     "Anthracnose": {

@@ -1,6 +1,6 @@
 # =============================================================================
 # AgriLite-Hybrid - Training Requirements
-# For running train_brinjal.py, train_tomato.py, train_chilli.py, train_hybrid.py
+# For running train_tomato.py, train_chilli.py, train_hybrid.py
 # 
 # Install with: pip install -r requirements_training.txt
 # =============================================================================
@@ -14,7 +14,7 @@ pandas>=2.2.0
 
 # Image Processing
 Pillow>=10.2.0
-opencv-python>=4.9.0
+opencv-python-headless>=4.9.0
 scikit-image>=0.22.0
 
 # Machine Learning Utilities

@@ -6,11 +6,14 @@ A lightweight hybrid architecture combining:
 - EfficientNetV2-B0 (accurate, feature-rich backbone)
 - CBAM Attention (Channel + Spatial attention)
 
-Combined Dataset: 3 crops with all disease classes
-- Brinjal (Eggplant): 7 classes
+Combined Dataset: 2 crops with all disease classes
 - Tomato: 11 classes  
 - Chilli (Pepper): 8 classes
-Total: 26 classes
+Total: 19 classes
+
+(Note: Brinjal/Eggplant was removed - its standalone model collapsed to
+15.82% accuracy, likely from data leakage caused by splitting after
+augmentation. See METHODOLOGY_AND_TECHNICAL_REFERENCE.md for details.)
 
 Optimized for Raspberry Pi deployment with TFLite INT8 quantization.
 
@@ -39,7 +42,7 @@ Architecture:
                     │
               ┌─────▼─────┐
               │  Softmax  │
-              │ (26 classes)│
+              │ (19 classes)│
               └───────────┘
 
 Author: AgriLite Hybrid Project
@@ -143,10 +146,6 @@ class Config:
     
     # Alternative: Use individual crop folders and merge
     INDIVIDUAL_DATA = {
-        'brinjal': os.path.join(PROJECT_ROOT, "DataSets", "eggplant", 
-                                "Eggplant Disease Recognition Dataset", 
-                                "Augmented Images (Version 02)", 
-                                "Augmented Images (Version 02)"),
         'tomato': os.path.join(PROJECT_ROOT, "DataSets", "tamota"),
         'chilli': os.path.join(PROJECT_ROOT, "DataSets", "chilli", 
                                "Chilli Plant Diseases Dataset(Augmented)", 
@@ -158,8 +157,8 @@ class Config:
     INPUT_SHAPE = (224, 224, 3)
     
     # Expected classes (will be auto-detected)
-    # Brinjal: 7, Tomato: 11, Chilli: 8 = 26 total
-    NUM_CLASSES = 26
+    # Tomato: 11, Chilli: 8 = 19 total
+    NUM_CLASSES = 19
     
     # Training parameters
     BATCH_SIZE = 32
@@ -365,9 +364,6 @@ def create_combined_dataset_structure(config):
     print(f"""
     {config.DATA_DIR}/
     ├── train/
-    │   ├── brinjal_healthy/
-    │   ├── brinjal_insect_pest/
-    │   ├── ... (all brinjal classes with 'brinjal_' prefix)
     │   ├── tomato_healthy/
     │   ├── tomato_bacterial_spot/
     │   ├── ... (all tomato classes with 'tomato_' prefix)
@@ -456,25 +452,6 @@ def create_data_generators(config, use_individual=False):
                     class_mode='categorical',
                     shuffle=False
                 )
-            else:
-                # Brinjal - single folder, use validation_split
-                train_gen = train_datagen.flow_from_directory(
-                    crop_path,
-                    target_size=config.INPUT_SHAPE[:2],
-                    batch_size=config.BATCH_SIZE,
-                    class_mode='categorical',
-                    subset='training',
-                    shuffle=True,
-                    seed=42
-                )
-                val_gen = val_test_datagen.flow_from_directory(
-                    crop_path,
-                    target_size=config.INPUT_SHAPE[:2],
-                    batch_size=config.BATCH_SIZE,
-                    class_mode='categorical',
-                    subset='validation',
-                    shuffle=False
-                )
             
             train_generators.append((crop_name, train_gen))
             val_generators.append((crop_name, val_gen))
@@ -520,8 +497,7 @@ def create_data_generators(config, use_individual=False):
     print(f"  - Batch size: {config.BATCH_SIZE}")
     print(f"\nClasses detected:")
     for i, (name, idx) in enumerate(sorted(class_indices.items(), key=lambda x: x[1])):
-        crop = "🍆" if "brinjal" in name.lower() or "eggplant" in name.lower() or "augmented" in name.lower() else \
-               "🍅" if "tomato" in name.lower() else \
+        crop = "�" if "tomato" in name.lower() else \
                "🌶️" if "chilli" in name.lower() else "🌿"
         print(f"    {idx:2d}: {crop} {name}")
     
@@ -534,7 +510,7 @@ def create_data_generators(config, use_individual=False):
             'class_names': class_names,
             'num_classes': num_classes,
             'model': 'AgriLite-Hybrid',
-            'crops': ['brinjal', 'tomato', 'chilli']
+            'crops': ['tomato', 'chilli']
         }, f, indent=2)
     print(f"\n✓ Class labels saved to: {labels_path}")
     
@@ -886,8 +862,7 @@ def evaluate_model(model, test_gen, class_names, config):
     # Shorten labels for display
     short_labels = []
     for label in class_labels:
-        short = label.replace("Augmented ", "").replace("Eggplant ", "Brinjal_")
-        short = short.replace("Chilli_", "C_").replace("Chilli__", "C_")
+        short = label.replace("Chilli_", "C_").replace("Chilli__", "C_")
         short = short[:20]
         short_labels.append(short)
     
@@ -909,7 +884,7 @@ def evaluate_model(model, test_gen, class_names, config):
     plt.figure(figsize=(20, 16))
     sns.heatmap(cm, annot=True, fmt='d', cmap='YlOrRd',
                 xticklabels=short_labels, yticklabels=short_labels)
-    plt.title('Confusion Matrix - AgriLite-Hybrid\n(Brinjal + Tomato + Chilli)', fontsize=14)
+    plt.title('Confusion Matrix - AgriLite-Hybrid\n(Tomato + Chilli)', fontsize=14)
     plt.xlabel('Predicted', fontsize=12)
     plt.ylabel('True', fontsize=12)
     plt.xticks(rotation=45, ha='right', fontsize=8)
@@ -928,7 +903,7 @@ def evaluate_model(model, test_gen, class_names, config):
     
     # Per-crop accuracy
     crop_metrics = {}
-    for crop_prefix in ['brinjal', 'tomato', 'chilli', 'augmented', 'eggplant']:
+    for crop_prefix in ['tomato', 'chilli']:
         crop_indices = [i for i, name in enumerate(class_labels) 
                        if crop_prefix.lower() in name.lower()]
         if crop_indices:
@@ -954,8 +929,7 @@ def evaluate_model(model, test_gen, class_names, config):
     print(f"  ✓ F1-Score (Weighted): {f1_weighted:.4f}")
     print(f"\n  Per-Crop Accuracy:")
     for crop, acc in crop_metrics.items():
-        emoji = "🍆" if "brinjal" in crop or "eggplant" in crop or "augmented" in crop else \
-                "🍅" if "tomato" in crop else "🌶️"
+        emoji = "" if "tomato" in crop else "🌶️"
         print(f"    {emoji} {crop.capitalize()}: {acc:.4f} ({acc*100:.2f}%)")
     
     return metrics
@@ -1238,12 +1212,10 @@ def generate_multicrop_gradcam(model, val_gen, config, samples_per_crop=3):
     idx_to_class = {v: k for k, v in val_gen.class_indices.items()}
     
     # Identify crop classes
-    crops = {'brinjal': [], 'tomato': [], 'chilli': []}
+    crops = {'tomato': [], 'chilli': []}
     for idx, name in idx_to_class.items():
         name_lower = name.lower()
-        if 'brinjal' in name_lower or 'eggplant' in name_lower or 'augmented' in name_lower:
-            crops['brinjal'].append(idx)
-        elif 'tomato' in name_lower:
+        if 'tomato' in name_lower:
             crops['tomato'].append(idx)
         elif 'chilli' in name_lower:
             crops['chilli'].append(idx)
@@ -1265,7 +1237,7 @@ def generate_multicrop_gradcam(model, val_gen, config, samples_per_crop=3):
     # Create visualization
     fig, axes = plt.subplots(3, samples_per_crop * 2, figsize=(samples_per_crop * 6, 10))
     
-    crop_emojis = {'brinjal': '🍆', 'tomato': '🍅', 'chilli': '🌶️'}
+    crop_emojis = {'tomato': '🍅', 'chilli': '🌶️'}
     
     for row, (crop_name, samples) in enumerate(crop_samples.items()):
         for col, (img, class_idx) in enumerate(samples):
@@ -1318,7 +1290,7 @@ def main():
     print("\n" + "="*70)
     print("🌱 AGRILITE-HYBRID: MULTI-CROP DISEASE DETECTION")
     print("   Architecture: MobileNetV3-Small + EfficientNetV2-B0 + CBAM")
-    print("   Crops: 🍆 Brinjal + 🍅 Tomato + 🌶️ Chilli")
+    print("   Crops:  Tomato + 🌶️ Chilli")
     print("   Optimized for: Raspberry Pi deployment")
     print("="*70)
     
@@ -1470,101 +1442,12 @@ def main():
 
 
 # =============================================================================
-# 11. UTILITY: CREATE COMBINED DATASET
-# =============================================================================
-
-def create_combined_dataset(config, output_dir=None):
-    """
-    Utility function to create combined dataset from individual crop folders.
-    
-    Creates symlinks (or copies) of images with crop-prefixed class names.
-    """
-    
-    if output_dir is None:
-        output_dir = config.DATA_DIR
-    
-    print(f"\n📁 Creating combined dataset at: {output_dir}")
-    
-    import shutil
-    from pathlib import Path
-    
-    # Mapping of crops to their folder structures
-    crop_configs = {
-        'brinjal': {
-            'path': config.INDIVIDUAL_DATA['brinjal'],
-            'prefix': 'brinjal',
-            'has_splits': False  # Single folder, needs splitting
-        },
-        'tomato': {
-            'path': config.INDIVIDUAL_DATA['tomato'],
-            'prefix': 'tomato',
-            'has_splits': True,
-            'train': 'train',
-            'val': 'valid'
-        },
-        'chilli': {
-            'path': config.INDIVIDUAL_DATA['chilli'],
-            'prefix': 'chilli',
-            'has_splits': True,
-            'train': 'train',
-            'val': 'valid'
-        }
-    }
-    
-    for split in ['train', 'val']:
-        split_dir = os.path.join(output_dir, split)
-        os.makedirs(split_dir, exist_ok=True)
-        
-        for crop_name, crop_config in crop_configs.items():
-            crop_path = crop_config['path']
-            prefix = crop_config['prefix']
-            
-            if crop_config['has_splits']:
-                src_split = crop_config.get(split, split)
-                src_dir = os.path.join(crop_path, src_split)
-            else:
-                src_dir = crop_path
-            
-            if not os.path.exists(src_dir):
-                print(f"  ⚠️ Not found: {src_dir}")
-                continue
-            
-            # Copy classes with prefix
-            for class_name in os.listdir(src_dir):
-                src_class = os.path.join(src_dir, class_name)
-                if not os.path.isdir(src_class):
-                    continue
-                
-                # Create prefixed class name
-                dst_class_name = f"{prefix}_{class_name}"
-                dst_class = os.path.join(split_dir, dst_class_name)
-                
-                if os.path.exists(dst_class):
-                    continue
-                
-                # Create symlink (Windows) or copy
-                try:
-                    os.symlink(src_class, dst_class)
-                    print(f"  ✓ Linked: {dst_class_name}")
-                except OSError:
-                    # Symlink not supported, copy instead
-                    shutil.copytree(src_class, dst_class)
-                    print(f"  ✓ Copied: {dst_class_name}")
-    
-    print(f"\n✓ Combined dataset created at: {output_dir}")
-    return output_dir
-
-
-# =============================================================================
 # ENTRY POINT
 # =============================================================================
 
 if __name__ == "__main__":
     # GPU already configured at module level via gpu_config
-    # Just run training
-    
-    # Uncomment to create combined dataset first:
-    # create_combined_dataset(Config())
+    # Dataset must already be combined - run scripts/combine_datasets.py first
     
     # Run training
     model, metrics = main()
