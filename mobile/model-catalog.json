@@ -1,0 +1,173 @@
+{
+  "version": "hybrid26-qwen05-v1",
+  "supportedCrops": [
+    "tomato",
+    "chilli"
+  ],
+  "classes": [
+    {
+      "id": "brinjal_Augmented_Healthy_Leaf",
+      "crop": "brinjal",
+      "name": "Augmented Healthy Leaf"
+    },
+    {
+      "id": "brinjal_Augmented_Insect_Pest_Disease",
+      "crop": "brinjal",
+      "name": "Augmented Insect Pest Disease"
+    },
+    {
+      "id": "brinjal_Augmented_Leaf_Spot_Disease",
+      "crop": "brinjal",
+      "name": "Augmented Leaf Spot Disease"
+    },
+    {
+      "id": "brinjal_Augmented_Mosaic_Virus_Disease",
+      "crop": "brinjal",
+      "name": "Augmented Mosaic Virus Disease"
+    },
+    {
+      "id": "brinjal_Augmented_Small_Leaf_Disease",
+      "crop": "brinjal",
+      "name": "Augmented Small Leaf Disease"
+    },
+    {
+      "id": "brinjal_Augmented_White_Mold_Disease",
+      "crop": "brinjal",
+      "name": "Augmented White Mold Disease"
+    },
+    {
+      "id": "brinjal_Augmented_Wilt_Disease",
+      "crop": "brinjal",
+      "name": "Augmented Wilt Disease"
+    },
+    {
+      "id": "chilli_Chilli_Anthracnos",
+      "crop": "chilli",
+      "name": "Anthracnose"
+    },
+    {
+      "id": "chilli_Chilli_Damping_Off",
+      "crop": "chilli",
+      "name": "Damping Off"
+    },
+    {
+      "id": "chilli_Chilli_Leaf_Curl_Virus",
+      "crop": "chilli",
+      "name": "Leaf Curl Virus"
+    },
+    {
+      "id": "chilli_Chilli_Leaf_Spot",
+      "crop": "chilli",
+      "name": "Leaf Spot"
+    },
+    {
+      "id": "chilli_Chilli_Veinal_Mottle_Virus",
+      "crop": "chilli",
+      "name": "Veinal Mottle Virus"
+    },
+    {
+      "id": "chilli_Chilli__Whitefly",
+      "crop": "chilli",
+      "name": "Whitefly"
+    },
+    {
+      "id": "chilli_Chilli__Yellowish",
+      "crop": "chilli",
+      "name": "Yellowish"
+    },
+    {
+      "id": "chilli_Chilli__healthy",
+      "crop": "chilli",
+      "name": "Healthy"
+    },
+    {
+      "id": "tomato_Bacterial_spot",
+      "crop": "tomato",
+      "name": "Bacterial Spot"
+    },
+    {
+      "id": "tomato_Early_blight",
+      "crop": "tomato",
+      "name": "Early Blight"
+    },
+    {
+      "id": "tomato_Late_blight",
+      "crop": "tomato",
+      "name": "Late Blight"
+    },
+    {
+      "id": "tomato_Leaf_Mold",
+      "crop": "tomato",
+      "name": "Leaf Mold"
+    },
+    {
+      "id": "tomato_Septoria_leaf_spot",
+      "crop": "tomato",
+      "name": "Septoria Leaf Spot"
+    },
+    {
+      "id": "tomato_Spider_mites_Two_spotted_spider_mite",
+      "crop": "tomato",
+      "name": "Spider Mites (Two-spotted)"
+    },
+    {
+      "id": "tomato_Target_Spot",
+      "crop": "tomato",
+      "name": "Target Spot"
+    },
+    {
+      "id": "tomato_Tomato_Yellow_Leaf_Curl_Virus",
+      "crop": "tomato",
+      "name": "Yellow Leaf Curl Virus"
+    },
+    {
+      "id": "tomato_Tomato_mosaic_virus",
+      "crop": "tomato",
+      "name": "Mosaic Virus"
+    },
+    {
+      "id": "tomato_healthy",
+      "crop": "tomato",
+      "name": "Healthy"
+    },
+    {
+      "id": "tomato_powdery_mildew",
+      "crop": "tomato",
+      "name": "Powdery Mildew"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "classifier",
+      "filename": "agrilite_hybrid.fp16.tflite",
+      "bytes": 16783984,
+      "sha256": "e5776353a159205fdab0933c0f1dee5f761f5b0da169470b06017423c5e4b236"
+    },
+    {
+      "id": "llm",
+      "filename": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "bytes": 491400032,
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db"
+    }
+  ],
+  "classifier": {
+    "inputShape": [
+      1,
+      224,
+      224,
+      3
+    ],
+    "normalization": "rgb/255",
+    "outputShape": [
+      1,
+      26
+    ],
+    "output": "probabilities"
+  },
+  "llm": {
+    "name": "Qwen2.5-0.5B-Instruct Q4_K_M",
+    "license": "Apache-2.0",
+    "source": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+    "revision": "9217f5db79a29953eb74d5343926648285ec7e67"
+  }
+}

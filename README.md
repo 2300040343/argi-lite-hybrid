@@ -13,6 +13,15 @@ A production-ready plant disease detection system using a hybrid deep learning m
 
 ## 🎯 Features
 
+### Offline Android app
+
+An Android-first React Native pilot is available in [mobile/](./mobile/).
+It downloads verified TFLite and small GGUF models from private S3 once, then
+captures leaves, classifies locally, and generates offline text insights.
+Results are memory-only; no backend or database is needed for the mobile app.
+See [mobile setup and limitations](./mobile/README.md).
+This mobile path is experimental, not production/field-validated.
+
 - **Multi-Crop Support**: Detect diseases in Tomato and Chilli
   (Brinjal was evaluated but excluded - its standalone model collapsed to
   15.8% accuracy from data leakage/class imbalance; see Limitations below)

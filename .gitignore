@@ -112,3 +112,14 @@ data/
 # Training logs remain local; models, plots, and metadata are versioned.
 outputs/**/logs/
 scripts/outputs/**/logs/
+
+# Mobile assets and private, expiring download links
+mobile-assets/
+mobile/model-manifest.json
+mobile/android/local.properties
+mobile/android/.gradle/
+mobile/android/.cxx/
+mobile/android/app/.cxx/
+mobile/download-config.json
+mobile/download-config.generated.json
+.venv-mobile/
